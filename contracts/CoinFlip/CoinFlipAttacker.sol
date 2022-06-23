@@ -24,9 +24,8 @@ contract CoinFlipAttacker {
     target.flip(this.getSolution());
   }
 
-  function getConsecutiveWins() public returns (uint256) {
+  function getConsecutiveWins() public view returns (uint256) {
     return target.consecutiveWins();
   }
 }
 
-//https://www.zupzup.org/smart-contract-interaction/
