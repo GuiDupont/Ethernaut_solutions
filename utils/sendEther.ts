@@ -1,3 +1,4 @@
+/* eslint-disable node/no-unpublished-import */
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { ethers } from "hardhat";
 
@@ -12,6 +13,5 @@ async function sendEther(
   });
   pendingTX.wait();
 }
-
 
 export { sendEther };
