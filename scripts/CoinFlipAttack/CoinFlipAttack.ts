@@ -32,4 +32,6 @@ main().catch((error) => {
 In previous version of solidity, the constructor was named after the name of 
 the contract. Here Fal1out is mispelled, thus it is a regular public function,
 callable by anyone.
+Usefull link: 
+https://www.zupzup.org/smart-contract-interaction/
 */
