@@ -32,6 +32,9 @@ const config: HardhatUserConfig = {
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
+    local: {
+      url: "http://localhost:8545",
+    },
   },
   // etherscan: {
   //   apiKey: process.env.ETHERSCAN_API_KEY,
