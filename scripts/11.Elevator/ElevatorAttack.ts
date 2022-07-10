@@ -16,7 +16,6 @@ async function checkSucces(attacker: SignerWithAddress, target: Contract) {
 }
 
 async function main() {
-  // const targetAddr = "0xBEdd2Bca152E2c7E55645CD7d585cd313FacbDF2";
   const target = setTargetContract();
   const [attacker] = await ethers.getSigners();
 
@@ -28,7 +27,6 @@ async function main() {
     .connect(attacker)
     .attack({ gasLimit: "3000000" });
   await tx.wait();
-
   checkSucces(attacker, target);
 }
 

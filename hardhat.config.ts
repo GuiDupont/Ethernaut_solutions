@@ -20,6 +20,10 @@ const config: HardhatUserConfig = {
         version: "0.8.0",
       },
     ],
+    settings: {
+      viaIR: true,
+      yul: true,
+    },
   },
   networks: {
     ropsten: {
@@ -34,6 +38,8 @@ const config: HardhatUserConfig = {
     },
     local: {
       url: "http://localhost:8545",
+      accounts:
+        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
   },
   // etherscan: {

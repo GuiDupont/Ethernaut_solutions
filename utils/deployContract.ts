@@ -8,7 +8,7 @@ async function deployContract(
   signerOrOptions?: Signer | FactoryOptions | undefined
 ) {
   const ContactFactory = await ethers.getContractFactory(name, signerOrOptions);
-  const contract = await ContactFactory.deploy({ value: "100000" });
+  const contract = await ContactFactory.deploy();
   await contract.deployed();
   return contract;
 }
