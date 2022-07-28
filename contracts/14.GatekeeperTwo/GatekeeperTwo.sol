@@ -6,9 +6,7 @@ contract GatekeeperTwo {
   address public entrant;
 
   modifier gateOne() {
-    console.log(msg.sender, tx.origin);
     require(msg.sender != tx.origin);
-    console.log("all good");
 
     _;
   }
@@ -25,7 +23,6 @@ contract GatekeeperTwo {
   }
 
   modifier gateThree(bytes8 _gateKey) {
-    console.log(uint64(0) - 1);
     require(
       uint64(bytes8(keccak256(abi.encodePacked(msg.sender)))) ^
         uint64(_gateKey) ==
