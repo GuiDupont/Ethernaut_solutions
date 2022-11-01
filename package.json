@@ -32,6 +32,9 @@
     "typechain": "^5.2.0",
     "typescript": "^4.7.4"
   },
+  "scripts": {
+    "fork": "yarn hardhat node --fork https://polygon-mumbai.g.alchemy.com/v2/FscFevieDllxRCSolBh6J-qCADCX78Js"
+  },
   "dependencies": {
     "@openzeppelin/contracts": "^3.0.0"
   }

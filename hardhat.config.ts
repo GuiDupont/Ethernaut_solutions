@@ -25,6 +25,9 @@ const config: HardhatUserConfig = {
       {
         version: "0.4.24",
       },
+      // {
+      //   version: "0.9.0",
+      // },
     ],
     settings: {
       viaIR: true,
@@ -32,8 +35,8 @@ const config: HardhatUserConfig = {
     },
   },
   networks: {
-    ropsten: {
-      url: process.env.ROPSTEN_URL || "",
+    mumbai: {
+      url: process.env.MUMBAI_URL || "",
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
