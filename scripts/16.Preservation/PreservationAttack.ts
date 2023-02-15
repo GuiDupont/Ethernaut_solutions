@@ -2,9 +2,8 @@ import { ethers } from "hardhat";
 import { abi } from "../../artifacts/contracts/16.Preservation/Preservation.sol/Preservation.json";
 import { BigNumber, Contract } from "ethers";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { sendEther } from "utils/sendEther";
-import { getContractAddress } from "ethers/lib/utils";
-import { deployContract } from "../../utils/deployContract";
+import { sendEther } from "../../utils/sendEther";
+import { deployContract } from "utils/deployContract";
 
 function setTargetContract() {
   const contractAddress = "0xf577488186CE532b2bC83Efc8D1470247A0Dbe1F";
@@ -41,7 +40,7 @@ main().catch((error) => {
 });
 
 // Explanation:
-// The setTime function, if called will delegate call will change the value 
+// The setTime function, if called will delegate call will change the value
 // of the first storage slot of the calling contract.
 // We are going to put there the address of a library we created.
 // This library, if called in delegate call will change the value of the third

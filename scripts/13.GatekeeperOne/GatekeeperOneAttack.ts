@@ -2,7 +2,7 @@ import { artifacts, ethers } from "hardhat";
 import { deployContract } from "../../utils/deployContract";
 import { abi } from "../../artifacts/contracts/13.GatekeeperOne/GatekeeperOne.sol/GatekeeperOne.json";
 import { BigNumber, Contract, providers } from "ethers";
-import { displayEthBalance } from "../../utils/displayEthBalance";
+import { displayEthBalance } from "../../utils/getEthBalance";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { callbackify, TextDecoder } from "util";
 

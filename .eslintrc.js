@@ -4,6 +4,7 @@ module.exports = {
     es2021: true,
     mocha: true,
     node: true,
+    amd: true,
   },
   plugins: ["@typescript-eslint"],
   extends: [

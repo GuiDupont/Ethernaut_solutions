@@ -5,10 +5,13 @@ import { FactoryOptions } from "hardhat/types";
 
 async function deployContract(
   name: string,
-  signerOrOptions?: Signer | FactoryOptions | undefined
+  signerOrOptions?: Signer | FactoryOptions | undefined,
+  args?: any[]
 ) {
   const ContactFactory = await ethers.getContractFactory(name, signerOrOptions);
-  const contract = await ContactFactory.deploy();
+  let contract;
+  if (args) contract = await ContactFactory.deploy(...args);
+  else contract = await ContactFactory.deploy();
   await contract.deployed();
   return contract;
 }

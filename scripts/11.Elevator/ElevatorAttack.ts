@@ -2,7 +2,7 @@ import { ethers } from "hardhat";
 import { deployContract } from "../../utils/deployContract";
 import { abi } from "../../artifacts/contracts/11.Elevator/Elevator.sol/Elevator.json";
 import { BigNumber, Contract } from "ethers";
-import { displayEthBalance } from "../../utils/displayEthBalance";
+import { displayEthBalance } from "../../utils/getEthBalance";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 
 function setTargetContract() {

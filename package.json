@@ -36,6 +36,7 @@
     "fork": "yarn hardhat node --fork https://polygon-mumbai.g.alchemy.com/v2/FscFevieDllxRCSolBh6J-qCADCX78Js"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^3.0.0"
+    "@openzeppelin/contracts": "^3.0.0",
+    "node-color-log": "^10.0.2"
   }
 }

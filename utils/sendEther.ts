@@ -2,7 +2,7 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { ethers } from "hardhat";
 
-async function sendEther(
+export async function sendEther(
   sender: SignerWithAddress,
   recipient: string,
   amountInEther: string
@@ -11,7 +11,5 @@ async function sendEther(
     to: recipient,
     value: ethers.utils.parseEther(amountInEther),
   });
-  pendingTX.wait();
+  await pendingTX.wait();
 }
-
-export { sendEther };

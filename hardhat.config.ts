@@ -4,8 +4,12 @@ import "@nomiclabs/hardhat-etherscan";
 import "@typechain/hardhat";
 
 import "@nomiclabs/hardhat-ethers";
+import { ethers } from "ethers";
+// import logger from "node-color-log";
 
 dotenv.config();
+
+// logger.setLevel("info");
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -25,9 +29,6 @@ const config: HardhatUserConfig = {
       {
         version: "0.4.24",
       },
-      // {
-      //   version: "0.9.0",
-      // },
     ],
     settings: {
       viaIR: true,
@@ -35,23 +36,26 @@ const config: HardhatUserConfig = {
     },
   },
   networks: {
+    hardhat: {
+      forking: {
+        url: process.env.MUMBAI_URL || "",
+      },
+      accounts:
+        process.env.PRIVATE_KEY !== undefined
+          ? [
+              {
+                privateKey: process.env.PRIVATE_KEY!,
+                balance: ethers.utils.parseEther("1000").toString(),
+              },
+            ]
+          : [],
+    },
     mumbai: {
       url: process.env.MUMBAI_URL || "",
       accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-    },
-    rinkeby: {
-      url: process.env.RINKEBY_URL || "",
-      accounts: [process.env.PRIVATE_KEY!, process.env.PRIVATE_KEY2!],
-    },
-    local: {
-      url: "http://localhost:8545",
-      accounts: [process.env.PRIVATE_KEY!, process.env.PRIVATE_KEY2!],
+        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY!] : [],
     },
   },
-  // etherscan: {
-  //   apiKey: process.env.ETHERSCAN_API_KEY,
-  // },
 };
 
 export default config;

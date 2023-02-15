@@ -2,7 +2,7 @@ import { artifacts, ethers } from "hardhat";
 import { deployContract } from "../../utils/deployContract";
 import { abi } from "../../artifacts/contracts/12.Privacy/Privacy.sol/Privacy.json";
 import { BigNumber, Contract } from "ethers";
-import { displayEthBalance } from "../../utils/displayEthBalance";
+import { displayEthBalance } from "../../utils/getEthBalance";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 
 function setTargetContract() {
