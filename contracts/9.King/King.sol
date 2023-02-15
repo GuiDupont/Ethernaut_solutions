@@ -14,7 +14,6 @@ contract King {
   }
 
   receive() external payable {
-    console.log(gasleft());
     require(msg.value >= prize || msg.sender == owner);
     king.transfer(msg.value);
     king = msg.sender;
