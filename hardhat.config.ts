@@ -60,13 +60,19 @@ const config: HardhatUserConfig = {
                 privateKey: process.env.PRIVATE_KEY!,
                 balance: ethers.utils.parseEther("1000").toString(),
               },
+              {
+                privateKey: process.env.PRIVATE_KEY2!,
+                balance: ethers.utils.parseEther("1000").toString(),
+              },
             ]
           : [],
     },
     mumbai: {
       url: process.env.MUMBAI_URL || "",
       accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY!] : [],
+        process.env.PRIVATE_KEY !== undefined
+          ? [process.env.PRIVATE_KEY!, process.env.PRIVATE_KEY2!]
+          : [],
     },
   },
 };
