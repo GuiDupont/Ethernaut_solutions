@@ -33,9 +33,9 @@ main().catch((error) => {
 
 /* Explanation:
   The good samaritan contract in its requestDonation function states that if 
-  wallet.donate10 revert NotEnoughBalance() the msg.sender will receive
+  wallet.donate10() reverts the NotEnoughBalance() error the msg.sender will receive
   all the remaining founds...
-  This is somehting we can do thanks to the notify function that the Coin contract
+  This is something we can do thanks to the notify function that the Coin contract
   will call on our contract. So on first call of notify we will revert, making 
-  the samaritan sending all its tokens and we will make sure to not revert this time.
+  the samaritan sending all its tokens and we will make sure to not revert the second time.
  */

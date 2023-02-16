@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.0 <0.9.0;
 
 import "hardhat/console.sol";
@@ -8,7 +9,7 @@ contract GoodSamaritanAttacker is INotifyable {
     error NotEnoughBalance();
     address public target;
 
-    function notify(uint256 amount) external override {
+    function notify(uint256 amount) external pure override {
         if (amount == 10) {
             revert NotEnoughBalance();
         }
