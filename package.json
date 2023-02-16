@@ -1,5 +1,8 @@
 {
   "name": "hardhat-project",
+  "engines": {
+    "node": "16.16.0"
+  },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.6",
     "@nomiclabs/hardhat-etherscan": "^2.1.8",
@@ -31,9 +34,6 @@
     "ts-node": "^10.8.1",
     "typechain": "^5.2.0",
     "typescript": "^4.7.4"
-  },
-  "scripts": {
-    "fork": "yarn hardhat node --fork https://polygon-mumbai.g.alchemy.com/v2/FscFevieDllxRCSolBh6J-qCADCX78Js"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^3.0.0",

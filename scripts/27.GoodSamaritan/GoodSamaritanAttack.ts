@@ -1,5 +1,5 @@
 import { ethers } from "hardhat";
-import { Contract, Signer } from "ethers";
+import { Contract } from "ethers";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { abi as CoinAbi } from "../../artifacts/contracts/27.GoodSamaritan/GoodSamaritan.sol/Coin.json";
 import { abi } from "../../artifacts/contracts/27.GoodSamaritan/GoodSamaritan.sol/GoodSamaritan.json";

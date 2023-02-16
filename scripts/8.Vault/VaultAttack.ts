@@ -1,5 +1,4 @@
 import { ethers } from "hardhat";
-// import { deployContract } from "../../utils/deployContract";
 import { abi } from "../../artifacts/contracts/8.Vault/Vault.sol/Vault.json";
 import { Contract } from "ethers";
 import { displayResult } from "../../utils/displayResult";

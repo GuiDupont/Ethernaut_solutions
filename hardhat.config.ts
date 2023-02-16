@@ -5,11 +5,8 @@ import "@typechain/hardhat";
 
 import "@nomiclabs/hardhat-ethers";
 import { ethers } from "ethers";
-// import logger from "node-color-log";
 
 dotenv.config();
-
-// logger.setLevel("info");
 
 const config: HardhatUserConfig = {
   solidity: {
