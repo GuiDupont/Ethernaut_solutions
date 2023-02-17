@@ -65,4 +65,4 @@ main().catch((error) => {
     The runtime code is the code that will be store in the final contract storage.
     The init bytecode will load the runtime code in memory and return it.
     The runtime code will write 42 in memory and call the return opcode.
-    */
+*/
