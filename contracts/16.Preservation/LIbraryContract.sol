@@ -1,11 +1,12 @@
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.6.0;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
+// Simple library contract to set the time
 contract LibraryContract {
     // stores a timestamp
-    uint256 storedTime;
+    uint storedTime;
 
-    function setTime(uint256 _time) public {
+    function setTime(uint _time) public {
         storedTime = _time;
     }
 }

@@ -1,22 +1,22 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.6.0;
+pragma solidity ^0.8.0;
 
 import "./Delegate.sol";
 import "hardhat/console.sol";
 
 contract Delegation {
-  address public owner;
-  Delegate delegate;
+    address public owner;
+    Delegate delegate;
 
-  constructor(address _delegateAddress) public {
-    delegate = Delegate(_delegateAddress);
-    owner = msg.sender;
-  }
-
-  fallback() external {
-    (bool result, ) = address(delegate).delegatecall(msg.data);
-    if (result) {
-      this;
+    constructor(address _delegateAddress) {
+        delegate = Delegate(_delegateAddress);
+        owner = msg.sender;
     }
-  }
+
+    fallback() external {
+        (bool result, ) = address(delegate).delegatecall(msg.data);
+        if (result) {
+            this;
+        }
+    }
 }

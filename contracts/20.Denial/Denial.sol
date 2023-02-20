@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
-import "hardhat/console.sol";
 
 contract Denial {
     address public partner; // withdrawal partner - pay the gas, split the withdraw
@@ -22,7 +21,6 @@ contract Denial {
         // keep track of last withdrawal time
         timeLastWithdrawn = block.timestamp;
         withdrawPartnerBalances[partner] += amountToSend;
-        console.log("end fx received");
     }
 
     // allow deposit of funds

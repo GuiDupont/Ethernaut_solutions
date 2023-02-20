@@ -1,17 +1,14 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.6.0;
-
-import "hardhat/console.sol";
-
+pragma solidity ^0.8.0;
 
 contract Delegate {
-  address public owner;
+    address public owner;
 
-  constructor(address _owner) public {
-    owner = _owner;
-  }
+    constructor(address _owner) {
+        owner = _owner;
+    }
 
-  function pwn() public {
-    owner = msg.sender;
-  }
+    function pwn() public {
+        owner = msg.sender;
+    }
 }

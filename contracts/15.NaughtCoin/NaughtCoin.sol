@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.6.0;
+pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
@@ -7,11 +7,11 @@ contract NaughtCoin is ERC20 {
     // string public constant name = 'NaughtCoin';
     // string public constant symbol = '0x0';
     // uint public constant decimals = 18;
-    uint256 public timeLock = now + 10 * 365 days;
+    uint public timeLock = block.timestamp + 10 * 365 days;
     uint256 public INITIAL_SUPPLY;
     address public player;
 
-    constructor(address _player) public ERC20("NaughtCoin", "0x0") {
+    constructor(address _player) ERC20("NaughtCoin", "0x0") {
         player = _player;
         INITIAL_SUPPLY = 1000000 * (10 ** uint256(decimals()));
         // _totalSupply = INITIAL_SUPPLY;
@@ -30,7 +30,7 @@ contract NaughtCoin is ERC20 {
     // Prevent the initial owner from transferring tokens until the timelock has passed
     modifier lockTokens() {
         if (msg.sender == player) {
-            require(now > timeLock);
+            require(block.timestamp > timeLock);
             _;
         } else {
             _;

@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.6.0;
-import "hardhat/console.sol";
+pragma solidity ^0.8.0;
 
 contract GatekeeperTwo {
     address public entrant;
@@ -11,8 +10,7 @@ contract GatekeeperTwo {
     }
 
     modifier gateTwo() {
-        uint256 x;
-
+        uint x;
         assembly {
             x := extcodesize(caller())
         }
@@ -24,7 +22,7 @@ contract GatekeeperTwo {
         require(
             uint64(bytes8(keccak256(abi.encodePacked(msg.sender)))) ^
                 uint64(_gateKey) ==
-                uint64(0) - 1
+                type(uint64).max
         );
         _;
     }

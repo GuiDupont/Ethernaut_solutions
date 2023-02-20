@@ -1,14 +1,13 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.6.0;
+pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/math/SafeMath.sol";
 import "./GatekeeperTwo.sol";
 import "hardhat/console.sol";
 
 contract GatekeeperTwoAttacker {
     GatekeeperTwo target;
 
-    constructor(address _target) public {
+    constructor(address _target) {
         target = GatekeeperTwo(_target);
 
         uint64 left = uint64(
