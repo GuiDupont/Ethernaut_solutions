@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0 <0.9.0;
 
-import "./Address.sol";
+import "@openzeppelin/contracts/utils/Address.sol";
 import "hardhat/console.sol";
-
 
 contract GoodSamaritan {
     Wallet public wallet;
@@ -16,12 +15,15 @@ contract GoodSamaritan {
         wallet.setCoin(coin);
     }
 
-    function requestDonation() external returns(bool enoughBalance){
+    function requestDonation() external returns (bool enoughBalance) {
         // donate 10 coins to requester
         try wallet.donate10(msg.sender) {
             return true;
         } catch (bytes memory err) {
-            if (keccak256(abi.encodeWithSignature("NotEnoughBalance()")) == keccak256(err)) {
+            if (
+                keccak256(abi.encodeWithSignature("NotEnoughBalance()")) ==
+                keccak256(err)
+            ) {
                 // send the coins left
                 wallet.transferRemainder(msg.sender);
                 return false;
@@ -39,19 +41,19 @@ contract Coin {
 
     constructor(address wallet_) {
         // one million coins for Good Samaritan initially
-        balances[wallet_] = 10**6;
+        balances[wallet_] = 10 ** 6;
     }
 
     function transfer(address dest_, uint256 amount_) external {
         uint256 currentBalance = balances[msg.sender];
 
         // transfer only occurs if balance is enough
-        if(amount_ <= currentBalance) {
+        if (amount_ <= currentBalance) {
             balances[msg.sender] -= amount_;
             balances[dest_] += amount_;
 
-            if(dest_.isContract()) {
-                // notify contract 
+            if (dest_.isContract()) {
+                // notify contract
                 console.log(amount_);
 
                 INotifyable(dest_).notify(amount_);
@@ -72,7 +74,7 @@ contract Wallet {
     error NotEnoughBalance();
 
     modifier onlyOwner() {
-        if(msg.sender != owner) {
+        if (msg.sender != owner) {
             revert OnlyOwner();
         }
         _;

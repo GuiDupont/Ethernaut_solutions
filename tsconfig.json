@@ -21,7 +21,6 @@
   "include": [
     "./ts",
     "./typechain-types",
-    "./test",
     "./scripts/**/*.ts",
     "./utils/**/*.ts",
     "./**/*.ts"
