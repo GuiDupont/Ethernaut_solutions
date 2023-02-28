@@ -1,4 +1,4 @@
-# To try the solution:
+# To try the solutions:
 
 1. Go on https://mumbaifaucet.com/ to get some mumbai matic.
 
