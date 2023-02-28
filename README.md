@@ -6,11 +6,13 @@
 
 3. Create .env file and complete it using env.example.
 
-4. Update for each scripts you want to try the targetAddress variable by deplying the contract on https://ethernaut.openzeppelin.com/
+4. For each scripts you want to try, update the ```targetAddress``` variable by deploying the contract on https://ethernaut.openzeppelin.com/ and checking the browser console.
 
 5. Then you can run each attack individually using this command:
-   npx hardhat run scripts/<attack path>
+   ```npx hardhat run scripts/<script path>```
 
 6. You can find an explanation of the attack method at the bottom of each script.
 
-Note: The attack will only be executed in a local fork. You can add "--network mumbai" at the end of point 5 command.
+7. It is possible that OpenZeppelin changes levels code source or solidity version. So be careful, my solution might get outdated.
+
+Note: The attack will only be executed in a local fork. You can run ```npx hardhat run scripts/<script path> --network mumbai``` to execute it on mumbai.
