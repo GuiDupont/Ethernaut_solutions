@@ -6,7 +6,7 @@ import { abi } from "../../artifacts/contracts/27.GoodSamaritan/GoodSamaritan.so
 import { deployContract } from "../../utils/deployContract";
 import { displayResult } from "../../utils/displayResult";
 
-const targetAddress = "0xd47f6c5e8719bd9378830046c2f0aab1c8b140f3";
+const targetAddress = "0xd47F6c5E8719bd9378830046c2F0aAb1C8b140f3";
 
 async function main() {
   const [attacker]: SignerWithAddress[] = await ethers.getSigners();
