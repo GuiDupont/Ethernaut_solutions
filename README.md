@@ -1,6 +1,6 @@
 # To try the solutions:
 
-1. Go on https://mumbaifaucet.com/ to get some mumbai matic.
+1. Go to https://mumbaifaucet.com/ to get some mumbai matic.
 
 2. Get a mumbai RPC URL, on Alchemy or Moralis for example.
 
@@ -13,6 +13,6 @@
 
 6. You can find an explanation of the attack method at the bottom of each script.
 
-7. It is possible that OpenZeppelin changes levels code source or solidity version. So be careful, my solution might get outdated.
+7. It is possible that OpenZeppelin changes levels code source or solidity version. So be careful, my solutions might get outdated.
 
 Note: The attack will only be executed in a local fork. You can run ```npx hardhat run scripts/<script path> --network mumbai``` to execute it on mumbai.
